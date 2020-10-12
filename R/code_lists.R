@@ -1,8 +1,8 @@
 #' Get code ONS code lists for specified data sets
 #'
-#' @param id A data set id
+#' @param id A data set ID.
 #'
-#' @return List of code lists relevant to the specified data set
+#' @return List of code lists relevant to the specified data set.
 #'
 #' @export
 get_code_lists <- function(id) {
