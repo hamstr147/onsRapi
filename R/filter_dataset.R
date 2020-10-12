@@ -3,7 +3,7 @@
 #' Returns a data frame containing a filtered data set.
 #'
 #' @param id ID of a data set. Data set IDs can be viewed using the `list_datasets` function.
-#' @param ... Further arguments specifying dimension values. Dimensions and possible values for a particular data set can be viewed using the `get_codelists` function.
+#' @param ... Optional further arguments specifying dimension values. Dimensions and possible values for a particular data set can be viewed using the `get_codelists` function.
 #' @return A data frame containing requested data.
 #' @importFrom jsonlite unbox toJSON
 #' @importFrom httr POST content
