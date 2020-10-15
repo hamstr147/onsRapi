@@ -43,7 +43,7 @@ head(cpi_codes$aggregate)
 ```
 I'm interested in inflation in book prices, so let's download that data. We can use the 'code' value in the code list data frames to filter the data - we can provide as many or few filters as we want, and if we don't provide any at all, I get the full data set!
 
-In this case, I'll use the `cpih1dim1S90501` value to filter on `aggregate`, and I won't filter on `geography` or `time`, so I will get results for book-related CPI for all times and geographies available. All I need to do is pass the id of the dataset ('cpih01') and a filter (`aggregate = "cpih1dim1S90501") to the `get_dataset` function:
+In this case, I'll use the `cpih1dim1S90501` value to filter on `aggregate`, and I won't filter on `geography` or `time`, so I will get results for book-related CPI for all times and geographies available. All I need to do is pass the id of the dataset (`"cpih01"`) and a filter (`aggregate = "cpih1dim1S90501"`) to the `get_dataset` function:
 ```
 book_cpi <- get_dataset("cpih01", aggregate = "cpih1dim1S90501")
 Getting data set...
