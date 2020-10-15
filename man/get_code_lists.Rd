@@ -2,16 +2,16 @@
 % Please edit documentation in R/code_lists.R
 \name{get_code_lists}
 \alias{get_code_lists}
-\title{Get code ONS code lists for specified data sets}
+\title{Get ONS code lists for specified data sets}
 \usage{
 get_code_lists(id)
 }
 \arguments{
-\item{id}{A data set id}
+\item{id}{A data set ID.}
 }
 \value{
-List of code lists relevant to the specified data set
+List of code lists relevant to the specified data set.
 }
 \description{
-Get code ONS code lists for specified data sets
+Get ONS code lists for specified data sets
 }

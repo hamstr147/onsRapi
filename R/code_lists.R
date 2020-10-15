@@ -1,4 +1,4 @@
-#' Get code ONS code lists for specified data sets
+#' Get ONS code lists for specified data sets
 #'
 #' @param id A data set ID.
 #'
@@ -8,7 +8,13 @@
 get_code_lists <- function(id) {
 
   link <- get_latest_version(id)
-  dimensions <- paste(link$dimensions$href, "editions", sep = "/")
+  # some links are broken as they duplicate 'v1/'
+  dim_links <- ifelse(
+    grepl("v1/v1", link$dimensions$href, fixed = TRUE),
+    sub("v1/", "", link$dimensions$href, fixed = TRUE),
+    link$dimensions$href
+  )
+  dimensions <- paste(dim_links, "editions", sep = "/")
   dim_names <- link$dimensions$name
 
   out <- lapply(

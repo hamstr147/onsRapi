@@ -1,54 +1,62 @@
-#' Get a data set
+#' Get a data set with optional filtering
 #'
-#' Returns a data frame containing a data set.
+#' Returns a data frame containing a filtered data set.
 #'
 #' @param id ID of a data set. Data set IDs can be viewed using the `list_datasets` function.
-#' @param full_dataset A logical value indicating whether you want to download the full data set. If `TRUE` any further parameters are ignored.
-#' @param ... Further arguments specifying dimension values. Dimensions and possible values for a particular data set can be viewed using the `get_codelists` function.
+#' @param ... Optional further arguments specifying dimension values. Dimensions and possible values for a particular data set can be viewed using the `get_codelists` function.
 #' @return A data frame containing requested data.
+#' @importFrom jsonlite unbox toJSON fromJSON
 #' @export
-get_dataset <- function(id, full_dataset = FALSE, ...) {
+get_dataset <- function(id, ...) {
 
-  res <- get_latest_version(id)
+  filter_url <- paste0(base_url(), "filters?submitted=true")
 
-  if(full_dataset) {
+  # data set details
+  latest_ver <- get_latest_version(id)
+  edition <- latest_ver$edition
+  version <- latest_ver$version
 
-    if("csv" %in% names(res$downloads)) {
+  # create body for POST
+  dots <- list(...)
 
-      obs <- read.csv(res$downloads$csv$href)
-      out <- obs[, !grepl(".", names(obs), fixed = TRUE)]
-
-      return(out)
-
-    } else {
-
-      stop("No csv download of full data set available. Try setting query parameters instead.")
-
+  dimensions <- lapply(
+    seq_along(dots),
+    function(i){
+      list(
+        name = jsonlite::unbox(names(dots)[i]),
+        options = dots[[i]]
+      )
     }
+  )
 
-  } else {
+  body <- list(
+    dataset = list(
+      id = jsonlite::unbox(id),
+      edition = jsonlite::unbox(edition),
+      version = jsonlite::unbox(version)
+    ),
+    dimensions = dimensions
+  )
 
-    dots <- list(...)
+  body_json <- jsonlite::toJSON(body)
 
-    dimensions <- paste(names(dots), dots, sep = "=")
-    dimensions <- paste(dimensions, collapse = "&")
-    dimensions <- paste0("/observations?", dimensions)
+  # POST filter parameters then find output url
+  post_res <- httr::POST(filter_url, body = body_json)
+  post_raw <- post_res$content
+  post_char <- rawToChar(post_raw)
+  post_list <- jsonlite::fromJSON(post_char)
+  filter_out <- post_list[["links"]][["filter_output"]][["href"]]
 
-    query <- paste0(link, dimensions)
-    obs <- res_to_list(query)
-    out <- obs$observations[, !grepl(".*\\.(id|href)$", names(obs$observations))]
-
-    if("dimensions" %in% names(out)) {
-      out[["dimensions"]] <- vapply(
-        out$dimensions,
-        function(x) {
-          x[["label"]]
-        },
-        rep("a", nrow(out)))
-    }
-
-    return(out)
-
+  # happens asynchronously so wait while filter processes
+  download_link <- NULL
+  message("Getting data set...\n")
+  while(is.null(download_link)) {
+    get_res <- res_to_list(filter_out)
+    Sys.sleep(1)
+    download_link <- get_res[["downloads"]][["csv"]][["href"]]
   }
+  out <- read.csv(download_link)
+  message("Done!")
+  out
 
 }
