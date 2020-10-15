@@ -10,8 +10,11 @@ create_get_data_function(id)
 \item{id}{The ID of a data set}
 }
 \value{
-A function that takes values of each dimension of the specified data set used to filter the data. These default to NULL, which should return the whole data set.
+A function that takes values of each dimension of the
+specified data set used to filter the data. These default to NULL,
+which should return the whole data set.
 }
 \description{
-Returns a function that takes dimensions values as arguments which can be used to get and filter a specified data set
+Returns a function that takes dimensions values as arguments which
+can be used to get and filter a specified data set
 }

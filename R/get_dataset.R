@@ -9,6 +9,7 @@
 #' using the `get_codelists` function.
 #' @return A data frame containing requested data.
 #' @importFrom jsonlite unbox toJSON fromJSON
+#' @importFrom utils read.csv
 #' @export
 get_dataset <- function(id, ...) {
 
@@ -47,7 +48,21 @@ get_dataset <- function(id, ...) {
   post_res <- httr::POST(filter_url, body = body_json)
   post_raw <- post_res$content
   post_char <- rawToChar(post_raw)
+
+  # error check
+  if (httr::http_error(post_res)) {
+    stop(
+      sprintf(
+        "ONS API request failed %s \n %s",
+        httr::status_code(post_res),
+        post_char
+      ),
+      call. = FALSE
+    )
+  }
+
   post_list <- jsonlite::fromJSON(post_char)
+
   filter_out <- post_list[["links"]][["filter_output"]][["href"]]
 
   # happens asynchronously so wait while filter processes
@@ -58,7 +73,7 @@ get_dataset <- function(id, ...) {
     Sys.sleep(1)
     download_link <- get_res[["downloads"]][["csv"]][["href"]]
   }
-  out <- read.csv(download_link)
+  out <- utils::read.csv(download_link)
   message("Done!")
   out
 

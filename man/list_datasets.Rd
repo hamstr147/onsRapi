@@ -7,7 +7,8 @@
 list_datasets(include_desc = FALSE)
 }
 \arguments{
-\item{include_desc}{A logical value indicating whether the descriptions of each dataset should be included.}
+\item{include_desc}{A logical value indicating whether the descriptions
+of each dataset should be included.}
 }
 \value{
 A data frame of data set IDs.

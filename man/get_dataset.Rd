@@ -7,9 +7,12 @@
 get_dataset(id, ...)
 }
 \arguments{
-\item{id}{ID of a data set. Data set IDs can be viewed using the `list_datasets` function.}
+\item{id}{ID of a data set. Data set IDs can be viewed using the
+`list_datasets` function.}
 
-\item{...}{Optional further arguments specifying dimension values. Dimensions and possible values for a particular data set can be viewed using the `get_codelists` function.}
+\item{...}{Optional further arguments specifying dimension values.
+Dimensions and possible values for a particular data set can be viewed
+using the `get_codelists` function.}
 }
 \value{
 A data frame containing requested data.
