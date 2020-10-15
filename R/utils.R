@@ -33,4 +33,3 @@ get_latest_version <- function(id) {
   res <- res_to_list(link)
   res
 }
-

@@ -1,4 +1,4 @@
 library(testthat)
-library(ons)
+library(onsRapi)
 
-test_check("ons")
+test_check("onsRapi")

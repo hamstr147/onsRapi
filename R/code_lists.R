@@ -23,7 +23,7 @@ get_code_lists <- function(id) {
       res <- res_to_list(dimensions[i])
       code_link <- res[["items"]][["links"]][["codes"]][["href"]]
       res <- res_to_list(code_link)
-      res_df <- res[["items"]][,c("code", "label")]
+      res_df <- res[["items"]][, c("code", "label")]
       res_df
     }
   )

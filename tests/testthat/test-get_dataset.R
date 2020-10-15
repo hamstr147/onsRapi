@@ -1,22 +1,14 @@
-context("Test that get_dataset retrieves datasets as specified")
+context("Test get_dataset")
 
-test_that("get_dataset retrieves cpih01 dataset", {
-  out <- get_dataset("cpih01",
-                     time = "Aug-16",
-                     geography = "K02000001",
-                     aggregate = "*")
-  exp <- structure(list(dimensions = structure(c("09.1.2 Photographic, cinematographic and optical equipment",
-                                                 "01.1.8 Sugar, jam, syrups, chocolate and confectionery", "12.5.4 Transport insurance"
-  ), .Dim = c(3L, 1L), .Dimnames = list(NULL, "aggregate")), observation = c("91.8",
-                                                                             "99.9", "113.7")), row.names = c(NA, 3L), class = "data.frame")
+test_that("get_dataset returns data set in line with specfied parameters", {
 
-  expect_equal(head(out, 3), exp)
-
-})
-
-test_that("get_dataset retrieves ashe-table-7-hours data", {
-
-  out <- get_dataset("ashe-table-7-hours",
-                     full_dataset = TRUE)
+  out <- get_dataset("cpih01", aggregate = "cpih1dim1T60000")
+  expect_s3_class(out, "data.frame")
+  expect_named(out,
+               c("V4_0", "mmm.yy", "time", "uk.only",
+                 "geography", "cpih1dim1aggid",
+                 "aggregate"))
+  expect_true(all(out$aggregate == "06 Health"))
+  expect_true(all(out$cpih1dim1aggid == "cpih1dim1T60000"))
 
 })
