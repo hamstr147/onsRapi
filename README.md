@@ -4,6 +4,14 @@
 # onsRapi
 A package that implements an R client for the ONS web API.
 
+## Installation
+```
+# If the devtools package is not yet installed, run: 
+# install.packages ("devtools")
+devtools::install_github("https://github.com/hamstr147/onsRapi")
+library(onsRapi)
+```
+
 ## How to use it
 A user can see what datasets are available using the `list_datasets` function. An optional `include_desc` argument can be set to `TRUE` to return the dataset IDs alongside full descriptions in a data frame. 
 ```
